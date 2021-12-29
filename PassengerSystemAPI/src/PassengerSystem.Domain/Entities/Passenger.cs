@@ -9,5 +9,25 @@
         public string DocumentNo { get; set; }
         public int DocumentType { get; set; }
         public DateTime IssueDate { get; set; }
+
+        private Passenger()
+        {
+
+        }
+
+        public static Passenger Create(string name, string surname, int gender, string documentNo, int documentType)
+        {
+            return new Passenger()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                Surname = surname,
+                Gender = gender,
+                DocumentNo = documentNo,
+                DocumentType = documentType,
+                IssueDate = DateTime.UtcNow
+            };
+        }
+
     }
 }
