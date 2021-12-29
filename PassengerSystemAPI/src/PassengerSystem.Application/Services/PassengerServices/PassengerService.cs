@@ -19,7 +19,7 @@ namespace PassengerSystem.Application.Services.PassengerServices
         }
         public async Task<Passenger> UpdatePassenger(UpdatePassenger entity)
         {
-            var updatePassenger = await _repository.GetFirst<Passenger>(x => x.Id == entity.Id);
+            var updatePassenger = _repository.GetFirst<Passenger>(x => x.Id == entity.Id);
             updatePassenger.Name = entity.Name;
             updatePassenger.Surname = entity.Surname;
             updatePassenger.DocumentType = entity.DocumentType;
@@ -37,9 +37,9 @@ namespace PassengerSystem.Application.Services.PassengerServices
         {
             return await _repository.GetAll<Passenger>();
         }
-        public async Task<Passenger> GetPassengerById(string id)
+        public Passenger GetPassengerById(string id)
         {
-            return await _repository.GetFirst<Passenger>(x => x.Id == id);
+            return _repository.GetFirst<Passenger>(x => x.Id == id);
         }
     }
 }

@@ -10,15 +10,14 @@ namespace PassengerSystem.Repositories
         public Repository(PassengerDbContext context)
         {
             _context = context;
-            
         }
         public async Task<List<T>> GetList<T>(Func<T,bool> condition) where T : class
         {
             return await _context.Set<T>().Where(condition).AsQueryable().ToListAsync();
         }
-        public async Task<T> GetFirst<T>(Func<T, bool> condition) where T : class
+        public T GetFirst<T>(Func<T, bool> condition) where T : class
         {
-            return await _context.Set<T>().Where(condition).AsQueryable().FirstOrDefaultAsync();
+            return _context.Set<T>().Where(condition).FirstOrDefault();
         }
         public async Task<T> AddAsync<T>(T entity) where T : class
         {

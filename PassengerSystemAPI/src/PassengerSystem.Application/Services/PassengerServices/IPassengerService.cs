@@ -9,6 +9,6 @@ namespace PassengerSystem.Application.Services.PassengerServices
         public Task<Passenger> UpdatePassenger(UpdatePassenger entity);
         public Task DeletePessenger(DeletePassenger entity);
         public Task<List<Passenger>> GetAllPassengers();
-        public Task<Passenger> GetPassengerById(string id);
+        public Passenger GetPassengerById(string id);
     }
 }
