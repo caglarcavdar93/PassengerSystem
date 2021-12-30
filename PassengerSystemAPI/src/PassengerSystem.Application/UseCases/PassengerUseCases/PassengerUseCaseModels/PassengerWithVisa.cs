@@ -1,4 +1,5 @@
 ﻿using PassengerSystem.Domain.Abstractions;
+using PassengerSystem.Domain.Exceptions;
 using PassengerSystem.Domain.ValueObjects;
 
 namespace PassengerSystem.Application.UseCases.PassengerUseCases.PassengerUseCaseModels
@@ -9,7 +10,14 @@ namespace PassengerSystem.Application.UseCases.PassengerUseCases.PassengerUseCas
 
         public void Validate()
         {
-            throw new NotImplementedException();
+            if (ValidationModel == null)
+                throw new ArgumentNullException("Passenger");
+
+            if (string.IsNullOrEmpty(ValidationModel.DocumentNo))
+                throw new ArgumentNullException(nameof(ValidationModel.DocumentNo));
+
+            if (ValidationModel.DocumentNo.Length != 9)
+                throw new FieldValidationException(nameof(ValidationModel.DocumentNo));
         }
     }
 }

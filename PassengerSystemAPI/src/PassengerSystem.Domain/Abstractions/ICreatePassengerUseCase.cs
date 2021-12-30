@@ -5,6 +5,6 @@ namespace PassengerSystem.Domain.Abstractions
 {
     public interface ICreatePassengerUseCase
     {
-        public Task<Passenger> CreatePassenger(PassengerValidationModel model)
+        public Task<Passenger> CreatePassenger(PassengerValidationModel model);
     }
 }

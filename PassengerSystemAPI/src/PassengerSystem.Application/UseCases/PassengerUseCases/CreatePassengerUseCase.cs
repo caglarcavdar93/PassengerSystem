@@ -26,7 +26,7 @@ namespace PassengerSystem.Application.UseCases.PassengerUseCases
                 Surname = model.Surname,
                 DocumentNo = model.DocumentNo,
                 DocumentType = model.DocumentType,
-                Gender = model.Gender,
+                Gender = (int)model.Gender,
                 IssueDate = model.IssueDate,
             };
             return await _passengerService.CreatePassenger(createPassenger);
