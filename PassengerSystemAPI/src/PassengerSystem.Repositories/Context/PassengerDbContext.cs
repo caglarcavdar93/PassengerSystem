@@ -4,19 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PassengerSystem.Repositories.Context
 {
     public class PassengerDbContext : DbContext
     {
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Passenger> Passengers { get; set; }
+
         public PassengerDbContext(DbContextOptions options) : base(options)
         {
 
         }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Passenger> Passengers { get; set; }
-
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,5 +25,7 @@ namespace PassengerSystem.Repositories.Context
             modelBuilder.Entity<User>().HasKey(p => p.Id);
             base.OnModelCreating(modelBuilder);
         }
+
+       
     }
 }

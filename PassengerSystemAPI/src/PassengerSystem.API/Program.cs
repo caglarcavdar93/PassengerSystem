@@ -1,6 +1,7 @@
 using PassengerSystem.API;
 using PassengerSystem.Application;
 using PassengerSystem.Repositories;
+using PassengerSystem.Repositories.Seed;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -29,5 +29,13 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
+
+var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+using (var scope = scopedFactory.CreateScope())
+{
+    var service = scope.ServiceProvider.GetService<DataSeeder>();
+    await service.SeedDataAsync();
+}
 
 app.Run();

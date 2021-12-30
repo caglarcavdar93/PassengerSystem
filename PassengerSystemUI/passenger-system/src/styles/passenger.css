@@ -1,0 +1,12 @@
+.mainContent{
+    display: inline-block;
+    width: 90%;
+    height: 90%;
+    background-color: whitesmoke;
+    border-radius: 15px;
+    margin: 2%;
+}
+.flexContent{
+    display: grid;
+    margin: 2%;
+}

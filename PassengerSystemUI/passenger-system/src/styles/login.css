@@ -1,0 +1,35 @@
+.loginCard{
+    display: inline-block;
+    width: 80%;
+    height: 60vh;
+    background-color: white;
+    margin-top: 10%;
+    border-radius: 20px;
+}
+.parentContainer{
+    display: flex;
+    flex-direction: row;
+    padding: 2%;
+    height: 100%;
+    justify-content: space-around;
+    align-items:flex-start;
+    
+}
+.logoContainer{
+    display: flex;
+    width: 40%;
+    height: 95%;
+    margin-top: 1%;
+    margin-left: 2%;
+    justify-content: center;
+}
+.loginContainer{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height:  95%;
+    margin-top: 1%;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+}
