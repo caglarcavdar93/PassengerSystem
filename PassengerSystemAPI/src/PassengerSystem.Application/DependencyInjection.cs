@@ -13,6 +13,7 @@ namespace PassengerSystem.Application
             services.AddTransient<IPassengerService, PassengerService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICreatePassengerUseCase, CreatePassengerUseCase>();
+            services.AddTransient<IUpdatePassengerUseCase, UpdatePassengerUseCase>();
         }
     }
 }
