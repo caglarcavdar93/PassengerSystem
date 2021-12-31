@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import "../styles/passenger.css";
-import passengerSystem from "../api/passengerSystem";
-import PassengerObj from "../data/passenger";
+
 import { Table, Button } from "react-bootstrap";
 import { BiTrash, BiRefresh } from "react-icons/bi";
+import { Context } from "../context/PassengerContext";
+import PassengerObj from "../data/passenger";
+import PassengerFormModal from "../components/passengerFormModal";
 const Passenger = () => {
-  const [passengers, setPassengers] = useState([]);
+  const { state, deletePassenger, getPassengers } = useContext(Context);
   useEffect(() => {
-    passengerSystem
-      .get("/GetPassengers")
-      .then((res) => res.data)
-      .then((response) => setPassengers(response));
+    getPassengers();
   }, []);
-  var passengerObj = PassengerObj();
+  let passengerObj = PassengerObj();
   var keys = Object.keys(passengerObj.data);
-
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedPassenger, setSelectedPassenger] = useState();
   const setpassengerValue = (value, key) => {
     if (key === "gender") {
       return passengerObj.methods.getGenderString(value);
@@ -25,20 +25,32 @@ const Passenger = () => {
     }
   };
   const handleUpdate = (id) => {
-    console.log(id);
+    let passenger = state.find((x) => x.id === id);
+    setSelectedPassenger(passenger);
+    setOpenForm(true);
   };
-  const handleDelete = (id) => {
-    console.log(id);
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure?")) {
+      deletePassenger(id);
+    }
   };
-  const handleNewPassengerClick = ()=>{
-
+  const handleNewPassengerClick = () => {
+    setSelectedPassenger();
+    setOpenForm(true);
   }
   return (
     <div className="mainContent">
+      <PassengerFormModal
+        isShown={openForm}
+        onclose={() => setOpenForm(false)}
+        passenger={selectedPassenger}
+      />
       <div className="flexContent">
         <h2 style={{ textAlign: "center" }}>Passenger List</h2>
-        <div style={{textAlign:"right", marginBottom:"20px"}}>
-            <Button variant="primary" onClick={()=> handleNewPassengerClick()}>+</Button>
+        <div style={{ textAlign: "right", marginBottom: "20px" }}>
+          <Button variant="primary" onClick={() => handleNewPassengerClick()}>
+            +
+          </Button>
         </div>
         <div>
           <Table striped bordered hover>
@@ -54,14 +66,14 @@ const Passenger = () => {
               </tr>
             </thead>
             <tbody>
-              {passengers.map((item) => {
+              {state.map((item) => {
                 var itemObj = Object.keys(item);
                 return (
                   <tr key={item["id"]}>
                     {itemObj.map((key, index) => {
                       if (index === 0) {
                         return (
-                          <div
+                          <td
                             style={{
                               display: "flex",
                               flexDirection: "row",
@@ -80,7 +92,7 @@ const Passenger = () => {
                             >
                               <BiTrash />
                             </Button>
-                          </div>
+                          </td>
                         );
                       }
                       return <td>{setpassengerValue(item[key], key)}</td>;
