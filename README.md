@@ -17,5 +17,9 @@ The scenario is:
 - React.js
 - React Bootstrap
 
-
+To run React project, go to project directory from command line and run:
+```
+npm install
+npm start
+```
 ** UI project didnt finished yet. But you can check API endpoints with Swagger.
