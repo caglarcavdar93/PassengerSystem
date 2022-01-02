@@ -1,4 +1,4 @@
-import React, { useState, useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import PassengerObj from "../data/passenger";
 import { Context } from "../context/PassengerContext";
@@ -10,41 +10,50 @@ const PassengerFormModal = ({ passenger, isShown, onclose }) => {
   const [citizenship, setCitizenship] = useState(2);
   const [documentNo, setDocumentNo] = useState("");
   const [documentType, setDocumentType] = useState(0);
+  const [documentTypeLabel, setDocumentTypeLabel] = useState("Visa");
   useEffect(() => {
-   if(passenger){
-    setName(passenger.name);
-    setSurname(passenger.surName);
-    setGender(passenger.gender);
-    setCitizenship( passengerObj.methods.getCitizenshipStringByDocumentType(
-      passenger.DocumentType
-    ));
-    setDocumentNo(passenger.documentNo);
-    setDocumentType(passengerObj.methods.getDocumentTypeByCitizenship(citizenship))
-   }
-  }, [])
-  const { addPassenger, updatePassengers } = useContext(Context);
+    if (passenger) {
+      setName(passenger.name);
+      setSurname(passenger.surname);
+      setGender(passenger.gender);
+      const initialCitizenship =
+        passengerObj.methods.getCitizenshipByDocumentType(
+          passenger.documentType
+        );
+
+      setCitizenship(initialCitizenship);
+      setDocumentNo(passenger.documentNo);
+      setDocumentType(passenger.documentType);
+    } else {
+      clearPassenger();
+    }
+  }, [passenger]);
+
+  const clearPassenger = () => {
+    setName("");
+    setSurname("");
+    setDocumentNo("");
+    setCitizenship(0);
+    setDocumentType(0);
+    setGender(0);
+  };
+
+  const { addPassenger, updatePassenger } = useContext(Context);
   const handleClose = () => {
     onclose();
   };
   const saveChanges = () => {
+    passengerObj.data.Name = name;
+    passengerObj.data.Surname = surname;
+    passengerObj.data.gender = gender;
+    passengerObj.data.citizenship = citizenship;
+    passengerObj.data.DocumentNo = documentNo;
+    passengerObj.data.documentType =
+      passengerObj.methods.getDocumentTypeByCitizenship(citizenship);
     if (passenger) {
-      passenger.name = name;
-      passenger.surName = surname;
-      passenger.gender = gender;
-      passenger.citizenship = citizenship;
-      passenger.documentNo = documentNo;
-      passenger.getDocumentType =
-      passengerObj.methods.getDocumentTypeByCitizenship(citizenship);
-      updatePassengers(passenger, (err) => window.alert(err));
+      passengerObj.data.Id = passenger.id
+      updatePassenger(passengerObj.data, (err) => window.alert(err));
     } else {
-      passengerObj.data.name = name;
-      passengerObj.data.surName = surname;
-      passengerObj.data.gender = gender;
-      passengerObj.data.citizenship = citizenship;
-      passengerObj.data.documentNo = documentNo;
-      passengerObj.data.getDocumentType =
-      passengerObj.methods.getDocumentTypeByCitizenship(citizenship);
-      console.log(passengerObj.data);
       addPassenger(passengerObj.data, (err) => window.alert(err));
     }
     onclose();
@@ -63,7 +72,10 @@ const PassengerFormModal = ({ passenger, isShown, onclose }) => {
               <Form.Control
                 type="text"
                 placeholder="Name"
-                onChange={(e) => setName(e.target.Value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                value={name}
               />
             </Form.Group>
 
@@ -72,13 +84,15 @@ const PassengerFormModal = ({ passenger, isShown, onclose }) => {
               <Form.Control
                 type="text"
                 placeholder="Surname"
-                onChange={(e) => setSurname(e.target.Value)}
+                onChange={(e) => setSurname(e.target.value)}
+                value={surname}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicGender">
               <Form.Label>Gender</Form.Label>
               <Form.Select
-                onChange={(e) => setGender(e.target.Value)}
+                onChange={(e) => setGender(parseInt(e.target.value))}
+                value={gender}
               >
                 <option value={0}>Male</option>
                 <option value={1}>Female</option>
@@ -91,7 +105,15 @@ const PassengerFormModal = ({ passenger, isShown, onclose }) => {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Citizenship</Form.Label>
               <Form.Select
-                onChange={(e) => setCitizenship(e.target.Value)}
+                onChange={(e) => {
+                  setCitizenship(parseInt(e.target.value));
+                  let label =
+                    passengerObj.methods.getDocumentTypeStringByCitizenship(
+                      e.target.value
+                    );
+                  setDocumentTypeLabel(label);
+                }}
+                value={citizenship}
               >
                 <option value={0}>USA</option>
                 <option value={1}>UK</option>
@@ -99,15 +121,12 @@ const PassengerFormModal = ({ passenger, isShown, onclose }) => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>
-                {passengerObj.methods.getDocumentTypeByCitizenship(citizenship)}
-              </Form.Label>
+              <Form.Label>{documentTypeLabel}</Form.Label>
               <Form.Control
                 type="text"
-                placeholder={passengerObj.methods.getDocumentTypeByCitizenship(
-                  citizenship
-                )}
-                onChange={(e) => setDocumentNo(e.target.Value)}
+                placeholder={documentTypeLabel}
+                onChange={(e) => setDocumentNo(e.target.value)}
+                value={documentNo}
               />
             </Form.Group>
           </Form>

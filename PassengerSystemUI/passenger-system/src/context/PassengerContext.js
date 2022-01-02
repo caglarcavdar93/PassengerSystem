@@ -16,7 +16,7 @@ const passengerReducer = (state, action) => {
         }
       });
     case "addPassenger":
-      return { ...state, state: [...state, action.payload] };
+      return [...state, action.payload];
     default:
       return state;
   }
@@ -27,7 +27,6 @@ const getPassengers = (dispath) => async () => {
   dispath({ type: "getPassengers", payload: response });
 };
 const deletePassenger = (dispath) => async (id) => {
-  console.log(id);
   let result = await PassengerObj().methods.deletePassenger(id);
   if (result) {
     dispath({ type: "deletePassenger", payload: id });
@@ -38,7 +37,9 @@ const updatePassenger = (dispath) => async (passenger, callback) => {
     passenger,
     callback
   );
-  if (response) dispath({ type: "updatePassenger", payload: response });
+  if (response) {
+    dispath({ type: "updatePassenger", payload: response });
+  }
 };
 const addPassenger = (dispath) => async (passenger, callback) => {
   const response = await PassengerObj().methods.addPassenger(

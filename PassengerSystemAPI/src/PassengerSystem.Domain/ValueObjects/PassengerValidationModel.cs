@@ -11,7 +11,7 @@ namespace PassengerSystem.Domain.ValueObjects
         public Gender Gender { get; set; }
         public string DocumentNo { get; set; }
         public int DocumentType { get; set; }
-        public DateTime IssueDate { get; set; }
+        public DateTime? IssueDate { get; set; }
         public Citizenship Citizenship { get; set; }
     }
 }

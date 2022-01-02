@@ -28,7 +28,7 @@ namespace PassengerSystem.Application.UseCases.PassengerUseCases
                 DocumentNo = model.DocumentNo,
                 DocumentType = model.DocumentType,
                 Gender = (int)model.Gender,
-                IssueDate = model.IssueDate
+                IssueDate = model.IssueDate.HasValue ? model.IssueDate.Value : DateTime.UtcNow,
             };
             return await _passengerService.UpdatePassenger(updatePassenger);
         }

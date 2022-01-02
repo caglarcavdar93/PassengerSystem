@@ -2,13 +2,13 @@ import passengerSystem from "../api/passengerSystem";
 function PassengerObj() {
   return {
     data: {
-      id: "",
-      name: "",
-      surName: "",
+      Id: "",
+      Name: "",
+      Surname: "",
       gender: 0,
-      documentNo: "",
+      DocumentNo: "",
       documentType: 0,
-      issueDate: "",
+      issueDate: null,
       citizenship: 0,
     },
     methods: {
@@ -42,16 +42,34 @@ function PassengerObj() {
             return "Visa";
         }
       },
-      getDocumentTypeByCitizenship(citizenshipNum){
+      getDocumentTypeStringByCitizenship(citizenshipNum) {
+        citizenshipNum = parseInt(citizenshipNum);
+        let str = "";
         switch (citizenshipNum) {
           case 0:
-            return "Passaport";
+            str = "Passaport";
+            break;
           case 1:
-            return "Travel Document";
+            str = "Travel Document";
+            break;
           case 2:
-            return "Visa";
+            str = "Visa";
+            break;
           default:
-            return "Visa";
+            str = "Visa";
+        }
+        return str;
+      },
+      getDocumentTypeByCitizenship(citizenshipNum) {
+        switch (citizenshipNum) {
+          case 0:
+            return 0;
+          case 1:
+            return 2;
+          case 2:
+            return 1;
+          default:
+            return 1;
         }
       },
       getCitizenshipString(citizenshipNum) {
@@ -66,16 +84,16 @@ function PassengerObj() {
             return "TR";
         }
       },
-      getCitizenshipStringByDocumentType(documentTypeNum){
+      getCitizenshipByDocumentType(documentTypeNum) {
         switch (documentTypeNum) {
           case 0:
-            return "USA";
+            return 0;
           case 1:
-            return "TR";
+            return 2;
           case 2:
-            return "Uk";
+            return 1;
           default:
-            return "TR";
+            return 2;
         }
       },
       async getPassengers() {
@@ -83,9 +101,8 @@ function PassengerObj() {
         await passengerSystem
           .get("/GetPassengers")
           .then((res) => res.data)
-          .then((response) => (passengerArr = response))
+          .then((response) => passengerArr = response)
           .catch((err) => console.log(err));
-        console.log(passengerArr);
         return passengerArr;
       },
       async deletePassenger(id) {
@@ -98,30 +115,37 @@ function PassengerObj() {
             },
           })
           .then((response) => response.status)
-          .then((res) => (result = res))
-          .catch((err) => (result = 500));
+          .then((res) => result = res)
+          .catch((err) => result = 500);
         if (result === 200) {
           return true;
         } else {
           return false;
         }
       },
-      async updatePassenger(passenger,errorCallBack) {
+      async updatePassenger(passenger, errorCallBack) {
         if (!passenger) return;
         let updatedPassenger;
-        await passengerSystem.put("/UpdatePassenger", {
-          data: passenger,
-        }).then(response => response.data).then(data => updatedPassenger = data).catch(err => errorCallBack(err));
+        await passengerSystem
+          .put("/UpdatePassenger", passenger)
+          .then((response) => response.data)
+          .then((data) => updatedPassenger = data)
+          .catch((err) => {
+            errorCallBack(err.response.data.Message);
+          });
         return updatedPassenger;
       },
-      async addPassenger(passenger,errorCallBack){
+      async addPassenger(passenger, errorCallBack) {
         let addPassenger;
-        console.log(passenger)
-        await passengerSystem.post("/AddPassenger",{
-          data: passenger
-        }).then(response=> response.data).then(data => addPassenger=data).catch(err => errorCallBack(err));
+        await passengerSystem
+          .post("/AddPassenger", passenger)
+          .then((response) => response.data)
+          .then((data) => addPassenger = data)
+          .catch((err) => {
+            errorCallBack(err.response.data.Message);
+          });
         return addPassenger;
-      }
+      },
     },
   };
 }

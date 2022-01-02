@@ -37,12 +37,15 @@ const Passenger = () => {
   const handleNewPassengerClick = () => {
     setSelectedPassenger();
     setOpenForm(true);
-  }
+  };
   return (
     <div className="mainContent">
       <PassengerFormModal
         isShown={openForm}
-        onclose={() => setOpenForm(false)}
+        onclose={() => {
+          setSelectedPassenger();
+          setOpenForm(false);
+        }}
         passenger={selectedPassenger}
       />
       <div className="flexContent">
