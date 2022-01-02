@@ -37,6 +37,9 @@ namespace PassengerSystem.API
                 case ArgumentNullException:
                     httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
+                case UserNotFoundException:
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    break;
                 default:
                     httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;

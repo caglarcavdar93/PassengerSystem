@@ -1,4 +1,6 @@
 ﻿using CheckInSystem.Domain.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PassengerSystem.Application.Services.PassengerServices;
 using PassengerSystem.Application.Services.PassengerServices.Dto;
@@ -9,6 +11,7 @@ namespace PassengerSystem.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PassengerController : Controller
     {
         private readonly IPassengerService _passengerService;

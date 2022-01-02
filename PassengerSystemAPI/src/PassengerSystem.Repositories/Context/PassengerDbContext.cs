@@ -23,6 +23,7 @@ namespace PassengerSystem.Repositories.Context
         {
             modelBuilder.Entity<Passenger>().HasKey(p => p.Id);
             modelBuilder.Entity<User>().HasKey(p => p.Id);
+            modelBuilder.Entity<User>().HasIndex(p => p.Email).IsUnique();
             base.OnModelCreating(modelBuilder);
         }
 

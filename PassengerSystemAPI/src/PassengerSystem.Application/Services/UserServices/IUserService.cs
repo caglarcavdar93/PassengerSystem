@@ -9,6 +9,6 @@ namespace PassengerSystem.Application.Services.UserServices
         public Task<User> UpdateUser(UpdateUser entity);
         public Task DeleteUser(DeleteUser entity);
         public Task<List<User>> GetAllUsers();
-        public User GetUserById(string id);
+        public User GetUserByEmail(string email);
     }
 }

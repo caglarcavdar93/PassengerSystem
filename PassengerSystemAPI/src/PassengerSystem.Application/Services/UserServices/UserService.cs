@@ -34,9 +34,9 @@ namespace PassengerSystem.Application.Services.UserServices
         {
             return await _repository.GetAll<User>();
         }
-        public User GetUserById(string id)
+        public User GetUserByEmail(string email)
         {
-            return _repository.GetFirst<User>(x => x.Id == id);
+            return _repository.GetFirst<User>(x => x.Email == email);
         }
     }
 }

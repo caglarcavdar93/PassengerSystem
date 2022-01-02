@@ -2,6 +2,7 @@
 using PassengerSystem.Application.Services.PassengerServices;
 using PassengerSystem.Application.Services.UserServices;
 using PassengerSystem.Application.UseCases.PassengerUseCases;
+using PassengerSystem.Application.UseCases.UserUseCase;
 using PassengerSystem.Domain.Abstractions;
 
 namespace PassengerSystem.Application
@@ -14,6 +15,7 @@ namespace PassengerSystem.Application
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICreatePassengerUseCase, CreatePassengerUseCase>();
             services.AddTransient<IUpdatePassengerUseCase, UpdatePassengerUseCase>();
+            services.AddTransient<IUserLoginUseCase, UserLoginUseCase>();
         }
     }
 }
