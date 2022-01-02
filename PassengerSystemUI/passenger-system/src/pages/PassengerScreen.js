@@ -1,18 +1,25 @@
 import React, { useEffect, useContext, useState } from "react";
 import "../styles/passenger.css";
-
+import { useNavigate } from "react-router-dom";
 import { Table, Button } from "react-bootstrap";
 import { BiTrash, BiRefresh } from "react-icons/bi";
 import { Context } from "../context/PassengerContext";
 import PassengerObj from "../data/passenger";
 import PassengerFormModal from "../components/passengerFormModal";
+import Cookies from "universal-cookie/es6";
 const Passenger = () => {
+  const cookies =new Cookies();
+  const navigate = useNavigate();
+  if(!cookies.get("token")){
+    navigate("/");
+  }
   const { state, deletePassenger, getPassengers } = useContext(Context);
   useEffect(() => {
     getPassengers();
   }, []);
   let passengerObj = PassengerObj();
   var keys = Object.keys(passengerObj.data);
+ 
   const [openForm, setOpenForm] = useState(false);
   const [selectedPassenger, setSelectedPassenger] = useState();
   const setpassengerValue = (value, key) => {
@@ -38,6 +45,10 @@ const Passenger = () => {
     setSelectedPassenger();
     setOpenForm(true);
   };
+  const handleLogout= ()=>{
+    cookies.remove("token");
+    navigate("/");
+  }
   return (
     <div className="mainContent">
       <PassengerFormModal
@@ -105,6 +116,11 @@ const Passenger = () => {
               })}
             </tbody>
           </Table>
+        </div>
+        <div style={{textAlign:"right"}}>
+        <Button variant="warning" onClick={handleLogout}>
+            Log out
+          </Button>
         </div>
       </div>
     </div>

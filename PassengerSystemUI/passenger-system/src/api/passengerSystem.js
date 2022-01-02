@@ -1,10 +1,24 @@
-import { type } from "@testing-library/user-event/dist/type";
 import axios from "axios";
-
-export default axios.create({
+import Cookies from "universal-cookie/es6";
+const instance = axios.create({
   baseURL: "https://localhost:7008",
   headers: {
     "content-type": "application/json",
-    "accepts": "text/plain"
+    accepts: "text/plain",
   },
 });
+let cookies = new Cookies();
+instance.interceptors.request.use(
+  async (conf) => {
+    const token = cookies.get("token");
+    if (token) {
+      conf.headers.Authorization = `Bearer ${token}`;
+    }
+    return conf;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
+
+export default instance;
